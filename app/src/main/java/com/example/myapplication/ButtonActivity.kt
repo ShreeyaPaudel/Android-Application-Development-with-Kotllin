@@ -1,6 +1,8 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,18 +12,33 @@ import com.example.myapplication.databinding.ActivityButtonBinding
 
 class ButtonActivity : AppCompatActivity() {
     lateinit var binding: ActivityButtonBinding
+    lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityButtonBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE)
+
         binding.btnLogin.setOnClickListener {
-            if (binding.editUsername.text.isEmpty()) {
+            val username: String = binding.editUsername.text.toString()
+            val password: String = binding.editPassword.text.toString()
+
+            if (username.isEmpty()) {
                 binding.editUsername.error = " username can't be empty"
-            } else if (binding.editPassword.text.isEmpty()) {
+            } else if (password.isEmpty()) {
                 binding.editPassword.error = "password can't be empty"
             } else {
+                if (binding.checkBoxRemember.isChecked){
+                    val editor = sharedPreferences.edit()
+
+                    editor.putString("username", username )
+                    editor.putString("password", password)
+
+                    editor.apply()
+
+            }
 
 
                 val intent = Intent(
@@ -30,8 +47,7 @@ class ButtonActivity : AppCompatActivity() {
                 )
 
 
-                val username: String = binding.editUsername.text.toString()
-                val password: String = binding.editPassword.text.toString()
+
 
                 //key     //value
                 intent.putExtra("username", username)

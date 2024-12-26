@@ -15,7 +15,6 @@ class RecyclerActivity : AppCompatActivity() {
     var imageList = ArrayList<Int>()
     var fruitsTitle = ArrayList<String>()
     var fruitsDesc = ArrayList<String>()
-
     lateinit var adapter: FruitsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
